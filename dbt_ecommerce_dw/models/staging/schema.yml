@@ -1,0 +1,144 @@
+version: 2
+
+sources:
+  - name: ecommerce
+    schema: public
+    tables:
+      - name: usuarios
+      - name: categorias
+      - name: productos
+      - name: ordenes
+      - name: detalleordenes
+      - name: direccionesenvio
+      - name: carrito
+      - name: metodospago
+      - name: ordenesmetodospago
+      - name: resenasproductos
+      - name: historialpagos
+
+models:
+  - name: stg_usuarios
+    description: "Staging de usuarios desde OLTP"
+    columns:
+      - name: usuario_id
+        tests: [unique, not_null]
+      - name: email
+        tests: [unique, not_null]
+      - name: dni
+        tests: [unique, not_null]
+
+  - name: stg_categorias
+    description: "Staging de categorías de productos"
+    columns:
+      - name: categoria_id
+        tests: [unique, not_null]
+      - name: nombre
+        tests: [not_null]
+
+  - name: stg_productos
+    description: "Staging de productos con categoría y stock"
+    columns:
+      - name: producto_id
+        tests: [unique, not_null]
+      - name: nombre
+        tests: [not_null]
+      - name: precio
+        tests: [not_null]
+      - name: stock
+        tests: [not_null]
+
+  - name: stg_ordenes
+    description: "Staging de órdenes de compra"
+    columns:
+      - name: orden_id
+        tests: [unique, not_null]
+      - name: usuario_id
+        tests: [not_null]
+      - name: total
+        tests: [not_null]
+      - name: estado
+        tests: [not_null]
+
+  - name: stg_detalleordenes
+    description: "Staging de detalle de órdenes"
+    columns:
+      - name: detalle_id
+        tests: [unique, not_null]
+      - name: orden_id
+        tests: [not_null]
+      - name: producto_id
+        tests: [not_null]
+      - name: cantidad
+        tests: [not_null]
+      - name: precio_unitario
+        tests: [not_null]
+
+  - name: stg_direccionesenvio
+    description: "Staging de direcciones de envío"
+    columns:
+      - name: direccion_id
+        tests: [unique, not_null]
+      - name: usuario_id
+        tests: [not_null]
+      - name: pais
+        tests: [not_null]
+      - name: codigo_postal
+        tests: [not_null]
+
+  - name: stg_carrito
+    description: "Staging de carrito de compras"
+    columns:
+      - name: carrito_id
+        tests: [unique, not_null]
+      - name: usuario_id
+        tests: [not_null]
+      - name: producto_id
+        tests: [not_null]
+      - name: cantidad
+        tests: [not_null]
+
+  - name: stg_metodospago
+    description: "Staging de métodos de pago"
+    columns:
+      - name: metodo_pago_id
+        tests: [unique, not_null]
+      - name: nombre
+        tests: [not_null]
+
+  - name: stg_ordenesmetodospago
+    description: "Staging de relación orden-método de pago"
+    columns:
+      - name: orden_metodo_id
+        tests: [unique, not_null]
+      - name: orden_id
+        tests: [not_null]
+      - name: metodo_pago_id
+        tests: [not_null]
+      - name: monto_pagado
+        tests: [not_null]
+
+  - name: stg_resenasproductos
+    description: "Staging de reseñas de productos"
+    columns:
+      - name: resena_id
+        tests: [unique, not_null]
+      - name: usuario_id
+        tests: [not_null]
+      - name: producto_id
+        tests: [not_null]
+      - name: calificacion
+        tests: [not_null]
+
+  - name: stg_historialpagos
+    description: "Staging de historial de pagos"
+    columns:
+      - name: pago_id
+        tests: [unique, not_null]
+      - name: orden_id
+        tests: [not_null]
+      - name: metodo_pago_id
+        tests: [not_null]
+      - name: monto
+        tests: [not_null]
+      - name: estado_pago
+        tests: [not_null]

@@ -1,0 +1,141 @@
+version: 2
+
+models:
+  - name: int_customer
+    description: "Vista intermedia de clientes con atributos completos"
+    columns:
+      - name: usuario_id
+        tests: [unique, not_null]
+      - name: nombre
+        tests: [not_null]
+      - name: apellido
+        tests: [not_null]
+      - name: email
+        tests: [unique, not_null]
+      - name: fecha_registro
+        tests: [not_null]
+      - name: pais
+      - name: ciudad
+      - name: provincia
+      - name: codigo_postal
+
+  - name: int_customer_segment
+    description: "Vista intermedia de segmentación de clientes según antigüedad"
+    columns:
+      - name: usuario_id
+        tests: [not_null]
+      - name: segment_code
+        tests: [not_null]
+
+  - name: int_product
+    description: "Vista intermedia de productos con categorías"
+    columns:
+      - name: producto_id
+        tests: [unique, not_null]
+      - name: nombre
+        tests: [not_null]
+      - name: descripcion
+      - name: precio
+        tests: [not_null]
+      - name: categoria_id
+        tests: [not_null]
+      - name: categoria_nombre
+
+  - name: int_category
+    description: "Vista intermedia de categorías"
+    columns:
+      - name: categoria_id
+        tests: [unique, not_null]
+      - name: nombre
+        tests: [not_null]
+      - name: descripcion
+
+  - name: int_address
+    description: "Vista intermedia de direcciones de envío"
+    columns:
+      - name: direccion_id
+        tests: [unique, not_null]
+      - name: usuario_id
+        tests: [not_null]
+      - name: calle
+      - name: ciudad
+      - name: provincia
+      - name: pais
+        tests: [not_null]
+      - name: codigo_postal
+
+  - name: int_order
+    description: "Vista intermedia de órdenes"
+    columns:
+      - name: orden_id
+        tests: [unique, not_null]
+      - name: usuario_id
+        tests: [not_null]
+      - name: fecha_orden
+        tests: [not_null]
+      - name: total
+        tests: [not_null]
+      - name: estado
+        tests: [not_null]
+
+  - name: int_order_line
+    description: "Vista intermedia de líneas de orden con subtotales"
+    columns:
+      - name: detalle_id
+        tests: [unique, not_null]
+      - name: orden_id
+        tests: [not_null]
+      - name: producto_id
+        tests: [not_null]
+      - name: usuario_id
+        tests: [not_null]
+      - name: cantidad
+        tests: [not_null]
+      - name: precio_unitario
+        tests: [not_null]
+      - name: total
+        tests: [not_null]
+
+  - name: int_payment
+    description: "Vista intermedia de pagos con método de pago"
+    columns:
+      - name: pago_id
+        tests: [unique, not_null]
+      - name: orden_id
+        tests: [not_null]
+      - name: metodo_pago_id
+        tests: [not_null]
+      - name: monto
+        tests: [not_null]
+      - name: fecha_pago
+        tests: [not_null]
+      - name: estado_pago
+        tests: [not_null]
+
+  - name: int_review
+    description: "Vista intermedia de reseñas con métricas derivadas"
+    columns:
+      - name: resena_id
+        tests: [unique, not_null]
+      - name: usuario_id
+        tests: [not_null]
+      - name: producto_id
+        tests: [not_null]
+      - name: calificacion
+        tests: [not_null]
+      - name: comment_length
+        tests: [not_null]
+      - name: fecha
+        tests: [not_null]
+
+  - name: int_inventory_snapshot
+    description: "Vista intermedia de snapshot diario de inventario"
+    columns:
+      - name: producto_id
+        tests: [not_null]
+      - name: snapshot_date
+        tests: [not_null]
+      - name: stock
+        tests: [not_null]
+      - name: stock_reserved
+      - name: avg_cost

@@ -1,0 +1,193 @@
+version: 2
+
+models:
+  - name: fact_order
+    description: "Tabla de hechos a nivel orden"
+    columns:
+      - name: order_sk
+        tests: [unique, not_null]
+      - name: order_id
+        tests: [not_null]
+      - name: customer_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_sk
+      - name: date_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_time')
+                field: date_sk
+      - name: address_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_address')
+                field: address_sk
+      - name: total_amount
+        tests: [not_null]
+      - name: n_items
+        tests: [not_null]
+      - name: order_status_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_order_status')
+                field: order_status_sk
+      - name: created_at
+      - name: updated_at
+
+  - name: fact_order_line
+    description: "Tabla de hechos a nivel línea de orden"
+    columns:
+      - name: order_line_sk
+        tests: [unique, not_null]
+      - name: order_id
+        tests: [not_null]
+      - name: order_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('fact_order')
+                field: order_sk
+      - name: product_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_product')
+                field: product_sk
+      - name: customer_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_sk
+      - name: address_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_address')
+                field: address_sk
+      - name: date_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_time')
+                field: date_sk
+      - name: quantity
+        tests: [not_null]
+      - name: price_unit
+        tests: [not_null]
+      - name: total
+      - name: created_at
+      - name: updated_at
+
+  - name: fact_payment
+    description: "Tabla de hechos de pagos por transacción"
+    columns:
+      - name: payment_sk
+        tests: [unique, not_null]
+      - name: payment_id
+        tests: [not_null]
+      - name: order_id
+        tests: [not_null]
+      - name: order_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('fact_order')
+                field: order_sk
+      - name: payment_method_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_payment_method')
+                field: payment_method_sk
+      - name: date_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_time')
+                field: date_sk
+      - name: amount
+        tests: [not_null]
+      - name: state_code
+        tests: [not_null]
+      - name: created_at
+
+  - name: fact_inventory_snapshot
+    description: "Snapshot diario de inventario"
+    columns:
+      - name: inventory_sk
+        tests: [unique, not_null]
+      - name: product_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_product')
+                field: product_sk
+      - name: date_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_time')
+                field: date_sk
+      - name: stock
+      - name: stock_reserved
+      - name: avg_cost
+      - name: created_at
+
+  - name: fact_order_accum
+    description: "Snapshot acumulado de órdenes (accumulating snapshot)"
+    columns:
+      - name: order_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('fact_order')
+                field: order_sk
+      - name: order_id
+      - name: date_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_time')
+                field: date_sk
+      - name: order_status_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_order_status')
+                field: order_status_sk
+
+  - name: fact_ventas_agg_daily
+    description: "Tabla agregada de ventas diarias por producto y categoría"
+    columns:
+      - name: agg_id
+        tests: [unique, not_null]
+      - name: date_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_time')
+                field: date_sk
+      - name: product_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_product')
+                field: product_sk
+      - name: category_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_category')
+                field: category_sk
+      - name: cantidad_total
+        tests: [not_null]
+      - name: ingreso_total
+        tests: [not_null]
+      - name: numero_ordenes
+        tests: [not_null]
