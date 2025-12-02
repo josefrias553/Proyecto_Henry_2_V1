@@ -5,6 +5,7 @@ Este proyecto implementa un Data Warehouse completo para un sistema de E-Commerc
 El objetivo es diseñar un entorno analítico, reproducible y escalable, con buenas prácticas de ingeniería de datos, modelado dimensional y control de calidad.
 
 🧱 Estructura General del Proyecto
+```
 M2_V1/
 ├── .venv/                      # Entorno virtual de Python
 ├── dbt_packages/               # Paquetes externos utilizados por dbt
@@ -46,6 +47,7 @@ M2_V1/
 ├── README.md                   # Este archivo
 ├── dbt_project.yml             # Configuración del proyecto dbt
 └── package-lock.yml            # Dependencias del entorno
+```
 
 🏗️ Proyecto dbt: dbt_ecommerce_dw
 
@@ -137,4 +139,5 @@ notebooks/notebook_analysis.ipynb
 scripts en analysis/
 
 Incluyen EDA, chequeos de calidad, métricas y validaciones.
+
 
